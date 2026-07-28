@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 
-app = FastAPI(title="PDF Chat API")
+from app.api.routes import router
 
+app = FastAPI(title="Pdf Chat API")
 
-@app.get("/")
-def home():
-    return {"message": "Backend is running"}
+app.include_router(router)
