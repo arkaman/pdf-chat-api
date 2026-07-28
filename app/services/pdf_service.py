@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 UPLOAD_DIR = Path("app/uploads")
 
-def process_pdf(file: UploadFile):
+def process_pdf(file: UploadFile) -> dict:
     """
     Save the uploaded PDF, extract its text, and split into chunks
     """
@@ -47,10 +47,9 @@ def process_pdf(file: UploadFile):
     )
 
     return {
+        "message": "PDF uploaded successfully.",
         "filename": file.filename,
-        "path": str(file_path),
         "characters": len(text),
         "chunks": len(chunks),
-        "embeddings": len(embeddings),
-        "index": True,
+        "indexed": True,
     }

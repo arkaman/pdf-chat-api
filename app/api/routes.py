@@ -1,11 +1,11 @@
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from app.services.pdf_service import process_pdf
 from app.services.chat_service import chat
-from app.api.schemas import ChatRequest, ChatResponse
+from app.api.schemas import ChatRequest, ChatResponse, UploadResponse
 
 router = APIRouter()
 
-@router.post("/upload")
+@router.post("/upload", response_model=UploadResponse)
 async def upload_pdf(file: UploadFile = File(...)):
 
     if file.content_type != "application/pdf":
@@ -16,12 +16,7 @@ async def upload_pdf(file: UploadFile = File(...)):
 
     result = process_pdf(file)
 
-    return {
-        "message": "PDF uploaded successfully",
-        "filename": result["filename"],
-        "characters": result["characters"],
-        "chunks": result["chunks"],
-    }
+    return result
 
 @router.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(request: ChatRequest):
