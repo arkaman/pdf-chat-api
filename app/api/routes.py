@@ -18,4 +18,5 @@ async def upload_pdf(file: UploadFile = File(...)):
         "message": "PDF uploaded successfully",
         "filename": result["filename"],
         "characters": result["characters"],
+        "chunks": result["chunks"],
     }
