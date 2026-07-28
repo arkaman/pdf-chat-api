@@ -12,3 +12,6 @@ def generate_embeddings(chunks: list[str]) -> list[list[float]]:
     )
 
     return [embedding.values for embedding in response.embeddings]
+
+def generate_embedding(text: str):
+    return generate_embeddings([text])[0]
