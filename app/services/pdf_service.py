@@ -6,6 +6,7 @@ from fastapi import UploadFile
 from app.services.embedding_service import generate_embeddings
 from app.utils.parser import extract_text
 from app.utils.chunker import chunk_text
+from app.services.vector_store import add_document
 
 import logging
 
@@ -32,6 +33,12 @@ def process_pdf(file: UploadFile):
 
     embeddings = generate_embeddings(chunks)
 
+    add_document(
+        filename=file.filename,
+        chunks=chunks,
+        embeddings=embeddings,
+    )
+
     logger.info(
         "Processed PDF '%s': %d characters, %d chunks",
         file.filename,
@@ -45,4 +52,5 @@ def process_pdf(file: UploadFile):
         "characters": len(text),
         "chunks": len(chunks),
         "embeddings": len(embeddings),
+        "index": True,
     }
