@@ -1,0 +1,20 @@
+[project]
+name = "pdf-chat-api"
+version = "0.1.0"
+description = "RAG backend for chatting with PDF documents using FastAPI, Gemini, and ChromaDB"
+readme = "README.md"
+requires-python = ">=3.12"
+
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "python-multipart",
+    "pymupdf",
+    "google-genai",
+    "chromadb",
+    "python-dotenv",
+    "pydantic",
+]
+
+[tool.uv]
+package = true
