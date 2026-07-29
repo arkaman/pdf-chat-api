@@ -7,6 +7,7 @@ from app.services.embedding_service import generate_embeddings
 from app.utils.parser import extract_text
 from app.utils.chunker import chunk_text
 from app.services.vector_store import add_document
+from app.services.vector_store import delete_document
 
 import logging
 
@@ -52,4 +53,27 @@ def process_pdf(file: UploadFile) -> dict:
         "characters": len(text),
         "chunks": len(chunks),
         "indexed": True,
+    }
+
+
+
+def delete_pdf(filename: str) -> dict:
+    """
+    Delete a PDF from storage and remove its embeddings.
+    """
+
+    file_path = UPLOAD_DIR / filename
+
+    if not file_path.exists():
+        raise FileNotFoundError(f"{filename} not found.")
+
+    # Remove vectors
+    delete_document(filename)
+
+    # Remove the uploaded file
+    file_path.unlink()
+
+    return {
+        "message": "PDF deleted successfully.",
+        "filename": filename,
     }

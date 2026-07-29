@@ -1,7 +1,7 @@
 from fastapi import APIRouter, File, HTTPException, UploadFile
-from app.services.pdf_service import process_pdf
+from app.services.pdf_service import process_pdf, delete_pdf
 from app.services.chat_service import chat
-from app.api.schemas import ChatRequest, ChatResponse, UploadResponse
+from app.api.schemas import ChatRequest, ChatResponse, UploadResponse, DeleteResponse
 
 router = APIRouter()
 
@@ -24,3 +24,23 @@ async def chat_endpoint(request: ChatRequest):
     answer = chat(request.question)
 
     return ChatResponse(answer=answer)
+
+@router.delete(
+    "/documents/{filename}",
+    response_model=DeleteResponse,
+)
+async def delete_pdf_endpoint(filename: str):
+    try:
+        return delete_pdf(filename)
+
+    except FileNotFoundError:
+        raise HTTPException(
+            status_code=404,
+            detail="PDF not found.",
+        )
+
+    except Exception:
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to delete PDF.",
+        )

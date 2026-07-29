@@ -14,3 +14,7 @@ class UploadResponse(BaseModel):
     characters: int
     chunks: int
     indexed: bool
+
+class DeleteResponse(BaseModel):
+    message: str
+    filename: str
